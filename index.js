@@ -122,7 +122,7 @@ function dressData(errors) { //																				<----
     testSetY = y.slice(seperationSize);
 
     for (let i = 0; i < testSetX.length; i++) { // 																	< ----
-         console.log('*** ', i, ' ***');
+         console.log(Math.floor(i/299*100), '%');
         train(i + 1, errors); // 																										<---
     }
 
@@ -217,7 +217,23 @@ app.post('/redraw', function (req, res) {
     }, errors)
         .fromFile(csvFilePath)
         .on('json', (jsonObj) => {
-            data.push(jsonObj);
+         briefObj = {
+             'AO-A12D-01TCGA': parseFloat(jsonObj['AO-A12D-01TCGA']),
+             'C8-A131-01TCGA': parseFloat(jsonObj['C8-A131-01TCGA']),
+             'AO-A12B-01TCGA': parseFloat(jsonObj['AO-A12B-01TCGA']),
+             'BH-A18Q-02TCGA': parseFloat(jsonObj['BH-A18Q-02TCGA']),
+             'C8-A130-02TCGA': parseFloat(jsonObj['C8-A130-02TCGA']),
+             'C8-A138-03TCGA': parseFloat(jsonObj['C8-A138-03TCGA']),
+             'E2-A154-03TCGA': parseFloat(jsonObj['E2-A154-03TCGA']),
+             'C8-A12L-04TCGA': parseFloat(jsonObj['C8-A12L-04TCGA']),
+             'A2-A0EX-04TCGA': parseFloat(jsonObj['A2-A0EX-04TCGA']),
+             'AO-A12D-05TCGA': parseFloat(jsonObj['AO-A12D-05TCGA']),
+             'type': jsonObj['gene_symbol'] // required field
+         }
+
+            //  console.log(briefObj.type)
+
+            data.push(briefObj); // Push each object to data Array
         })
         .on('done', (error) => {
             seperationSize = 0.7 * data.length;
